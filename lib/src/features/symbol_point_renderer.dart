@@ -35,7 +35,14 @@ class SymbolPointRenderer extends FeatureRenderer {
       final text = textLayout.text.evaluate(toArgsMap(context, feature));
       if (text != null) {
         final abbreviated = TextAbbreviator().abbreviate(text);
-        final textRenderer = TextRenderer(context, style, abbreviated, feature);
+        final textRenderer = TextRenderer(
+          context,
+          style,
+          abbreviated,
+          feature,
+          layer,
+          textLayout.keepUpright,
+        );
         points.forEach((point) {
           points.forEach((point) {
             if (point.length < 2) {

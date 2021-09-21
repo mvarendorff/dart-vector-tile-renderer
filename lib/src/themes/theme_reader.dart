@@ -126,6 +126,8 @@ class ThemeReader {
         LayoutPlacement.fromName(layout?['symbol-placement'] as String?);
     final anchor = parse<String>(layout?['text-anchor']);
     final textFunction = parse<String>(layout?['text-field'])!;
+    final keepUpright =
+        parse<bool>(layout?['text-keep-upright']) ?? ValueExpression(true);
 
     final font = layout?['text-font'];
     String? fontFamily;
@@ -147,6 +149,7 @@ class ThemeReader {
       placement: placement,
       anchor: anchor,
       text: textFunction,
+      keepUpright: keepUpright,
       textSize: textSize,
       textLetterSpacing: textLetterSpacing,
       fontFamily: fontFamily,

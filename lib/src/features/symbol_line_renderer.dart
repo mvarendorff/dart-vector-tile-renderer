@@ -54,7 +54,14 @@ class SymbolLineRenderer extends FeatureRenderer {
         final metrics = path.computeMetrics().toList();
         if (metrics.length > 0) {
           final abbreviated = TextAbbreviator().abbreviate(text);
-          final renderer = TextRenderer(context, style, abbreviated, feature);
+          final renderer = TextRenderer(
+            context,
+            style,
+            abbreviated,
+            feature,
+            layer,
+            textLayout.keepUpright,
+          );
           final renderBox = _findMiddleMetric(context, metrics, renderer);
           if (renderBox != null) {
             final tangent = renderBox.tangent;

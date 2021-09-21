@@ -1,6 +1,8 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:vector_tile/vector_tile.dart';
 import 'package:vector_tile/vector_tile_feature.dart';
 import 'package:vector_tile_renderer/src/expressions/expression.dart';
 
@@ -12,12 +14,14 @@ class TextRenderer {
   final Context context;
   final Style style;
   final String text;
+  final Expression<bool> keepUpright;
   final VectorTileFeature feature;
+  final VectorTileLayer layer;
 
   late final TextPainter? _painter;
   late final Offset? _translation;
-
-  TextRenderer(this.context, this.style, this.text, this.feature) {
+  TextRenderer(this.context, this.style, this.text, this.feature, this.layer,
+      this.keepUpright) {
     _painter = _createTextPainter(context, style, text);
     _translation = _layout();
   }
@@ -44,12 +48,29 @@ class TextRenderer {
       return;
     }
 
-    if (_translation != null) {
+    final args = toArgsMap(context, feature);
+    final keepUpright = this.keepUpright.evaluate(args) ?? true;
+    if (_translation != null || keepUpright) {
       context.canvas.save();
+    }
+
+    if (_translation != null) {
       context.canvas.translate(_translation!.dx, _translation!.dy);
     }
+
+    if (keepUpright) {
+      final angle = (360.0 - context.rotation) * pi / 180.0;
+
+      final translateX = _painter!.width / 2;
+      final translateY = _painter!.height / 2;
+      context.canvas.translate(offset.dx + translateX, offset.dy + translateY);
+      context.canvas.rotate(angle);
+
+      offset = Offset(-translateX, -translateY);
+    }
+
     painter.paint(context.canvas, offset);
-    if (_translation != null) {
+    if (_translation != null || keepUpright) {
       context.canvas.restore();
     }
   }

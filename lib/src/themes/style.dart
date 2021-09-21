@@ -55,6 +55,7 @@ class TextLayout {
   final LayoutPlacement placement;
   final Expression<String>? anchor;
   final Expression<String> text;
+  final Expression<bool> keepUpright;
   final Expression<double> textSize;
   final Expression<double>? textLetterSpacing;
   final FontStyle? fontStyle;
@@ -65,6 +66,7 @@ class TextLayout {
       {required this.placement,
       required this.anchor,
       required this.text,
+      required this.keepUpright,
       required this.textSize,
       required this.textLetterSpacing,
       required this.fontFamily,
