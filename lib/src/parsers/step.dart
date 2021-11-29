@@ -29,7 +29,7 @@ class StepParser<T> extends ExpressionParser<T> {
       final value = Parsers.parse<T>(chunk[1]);
 
       return Step<T>(step, value);
-    });
+    }).toList();
 
     return StepExpression<T>(input, base, chunks);
   }

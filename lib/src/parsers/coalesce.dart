@@ -9,8 +9,11 @@ class CoalesceParser<T> extends ExpressionParser<T> {
   Expression<T>? parse(data) {
     if (data is! List) return null;
 
-    final delegates =
-        data.skip(1).map((i) => Parsers.parse<T>(i)).whereType<Expression<T>>();
+    final delegates = data
+        .skip(1)
+        .map((i) => Parsers.parse<T>(i))
+        .whereType<Expression<T>>()
+        .toList();
     return CoalesceExpression(delegates);
   }
 }

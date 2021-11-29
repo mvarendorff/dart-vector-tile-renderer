@@ -10,13 +10,13 @@ class Match<Input, Output> {
 
 class MatchExpression<Output, Input> extends Expression<Output> {
   final Expression<Input>? _compare;
-  final Iterable<Match<Input, Output>> _matches;
+  final List<Match<Input, Output>> _matches;
   final Expression<Output>? _fallback;
 
   MatchExpression(this._compare, this._matches, this._fallback);
 
   @override
-  Output? evaluate(Map<String, dynamic> args) {
+  Output? evaluateWithArgs(Map<String, dynamic> args) {
     final compare = _compare?.evaluate(args);
     if (compare == null) {
       return _fallback?.evaluate(args);

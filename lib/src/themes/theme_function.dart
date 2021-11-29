@@ -41,7 +41,7 @@ abstract class ThemeFunction<T> {
   }
 
   T? interpolate(
-    Expression<T>? base,
+    Expression<double>? base,
     FunctionStop<T> lower,
     FunctionStop<T> upper,
     Map<String, dynamic> args,
@@ -120,7 +120,7 @@ class ColorThemeFunction extends ThemeFunction<Color> {
 
   @override
   Color? interpolate(
-    Expression<Color>? base,
+    Expression<double>? base,
     FunctionStop<Color> lower,
     FunctionStop<Color> upper,
     Map<String, dynamic> args,

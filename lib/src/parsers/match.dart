@@ -24,7 +24,7 @@ class MatchParser<T> extends ExpressionParser<T> {
       'Failed parsing on expression $data',
     );
 
-    final inputType = _findInputType(copy);
+    final inputType = determineInputType(copy[2]);
 
     if (inputType == double) {
       return _parse<double>(copy);
@@ -34,7 +34,12 @@ class MatchParser<T> extends ExpressionParser<T> {
       return _parse<String>(copy);
     }
 
-    return null;
+    throw ArgumentError(
+      '$data does not appear to contain a valid match '
+      'expression. Make sure that the input labels are either literal numbers '
+      'or strings or lists of one of the two. '
+      'See https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/#match',
+    );
   }
 
   Expression<T>? _parse<Input>(List data) {
@@ -47,32 +52,8 @@ class MatchParser<T> extends ExpressionParser<T> {
       final compareExpression = Parsers.parse<T>(chunk[1]);
 
       return Match<Input, T>(matchInput, compareExpression);
-    });
+    }).toList();
 
     return MatchExpression<T, Input>(input, matches, fallback);
-  }
-
-  Type _findInputType(List data) {
-    final referenceField = data[2];
-
-    var type = referenceField.runtimeType;
-    if (referenceField is List) {
-      type = referenceField[0].runtimeType;
-    }
-
-    if (type == num) {
-      type = double;
-    }
-
-    if (type == String || type == double) {
-      return type;
-    }
-
-    throw ArgumentError(
-      '$data does not appear to contain a valid match '
-      'expression. Make sure that the input labels are either literal numbers '
-      'or strings or lists of one of the two. '
-      'See https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/#match',
-    );
   }
 }

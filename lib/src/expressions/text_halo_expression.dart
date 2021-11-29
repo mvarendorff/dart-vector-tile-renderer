@@ -8,7 +8,7 @@ class TextHaloExpression extends Expression<List<Shadow>> {
 
   TextHaloExpression(this._color, this._haloWidth);
 
-  List<Shadow>? evaluate(Map<String, dynamic> args) {
+  List<Shadow>? evaluateWithArgs(Map<String, dynamic> args) {
     final color = _color.evaluate(args);
     if (color == null) {
       return null;

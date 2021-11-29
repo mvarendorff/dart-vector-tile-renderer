@@ -1,11 +1,13 @@
 import 'package:vector_tile_renderer/src/expressions/expression.dart';
 import 'package:vector_tile_renderer/src/expressions/function_expression.dart';
+import 'package:vector_tile_renderer/src/expressions/numeric_term.dart';
 import 'package:vector_tile_renderer/src/expressions/value_expression.dart';
 import 'package:vector_tile_renderer/src/themes/theme_function.dart';
 import 'package:vector_tile_renderer/src/themes/theme_function_model.dart';
 
 import 'interpolation.dart';
 import 'parser.dart';
+import 'parsers.dart' as Parsers;
 
 class DoubleParser extends ExpressionParser<double> {
   @override
@@ -23,6 +25,15 @@ class DoubleParser extends ExpressionParser<double> {
       switch (data[0]) {
         case 'interpolate':
           return InterpolationParser<double>().parse(data);
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+          return NumericTermExpression(
+            data[0],
+            Parsers.parse<double>(data[1])!,
+            Parsers.parse<double>(data[1])!,
+          );
         default:
           return null;
       }

@@ -28,6 +28,20 @@ abstract class ExpressionParser<T> {
     return result;
   }
 
+  @nonVirtual
+  Type determineInputType(dynamic referenceField) {
+    var type = referenceField.runtimeType;
+    if (referenceField is List) {
+      type = referenceField[0].runtimeType;
+    }
+
+    if (type == num || type == int) {
+      type = double;
+    }
+
+    return type;
+  }
+
   Expression<T>? _parseCommonExpressions(dynamic data) {
     if (data is T && T != dynamic) return ValueExpression(data);
 
@@ -46,6 +60,9 @@ abstract class ExpressionParser<T> {
     if (data[0] == 'match') return MatchParser<T>().parse(data);
     if (data[0] == 'step') return StepParser<T>().parse(data);
     if (data[0] == 'zoom') return ArgumentExpression<T>('zoom');
+    if (data[0] == 'geometry-type') {
+      return ArgumentExpression<T>('geometry-type');
+    }
 
     return null;
   }

@@ -42,7 +42,7 @@ abstract class InterpolationExpression<T> extends Expression<T> {
   }
 
   @override
-  T? evaluate(Map<String, dynamic> args) {
+  T? evaluateWithArgs(Map<String, dynamic> args) {
     final functionInput = input.evaluate(args)!;
 
     final firstStop = stops.first;

@@ -8,5 +8,5 @@ class FunctionExpression<T> extends Expression<T> {
   FunctionExpression(this._evaluate);
 
   @override
-  T? evaluate(Map<String, dynamic> args) => _evaluate(args);
+  T? evaluateWithArgs(Map<String, dynamic> args) => _evaluate(args);
 }

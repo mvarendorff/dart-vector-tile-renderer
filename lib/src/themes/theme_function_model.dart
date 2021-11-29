@@ -4,7 +4,7 @@ import 'package:vector_tile_renderer/src/expressions/expression.dart';
 import 'package:vector_tile_renderer/src/parsers/parsers.dart';
 
 class FunctionModel<T> {
-  final Expression<T>? base;
+  final Expression<double>? base;
   final List<FunctionStop<T>> stops;
 
   FunctionModel(this.base, this.stops);
@@ -43,7 +43,7 @@ class DoubleFunctionModelFactory {
 
 class ColorFunctionModelFactory {
   FunctionModel<Color>? create(json) {
-    Expression<Color>? base = parse<Color>(json['base']);
+    Expression<double>? base = parse<double>(json['base']);
 
     final stops = json['stops'] as List<dynamic>?;
     if (stops == null) {

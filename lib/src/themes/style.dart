@@ -52,7 +52,7 @@ class LayoutAnchor {
 }
 
 class TextLayout {
-  final LayoutPlacement placement;
+  final Expression<String>? placement;
   final Expression<String>? anchor;
   final Expression<String> text;
   final Expression<double> textSize;

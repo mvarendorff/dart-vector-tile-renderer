@@ -7,7 +7,7 @@ class ArgumentExpression<T> extends Expression<T> {
   ArgumentExpression(this.key);
 
   @override
-  T? evaluate(Map<String, dynamic> args) {
+  T? evaluateWithArgs(Map<String, dynamic> args) {
     final value = args[key];
 
     if (value is T?) return value;
@@ -19,7 +19,8 @@ class ArgumentExpression<T> extends Expression<T> {
     if (value is VectorTileValue) {
       switch (T) {
         case double:
-          return value.doubleValue as T?;
+          return (value.dartDoubleValue ?? value.dartIntValue?.toDouble())
+              as T?;
         case bool:
           return value.boolValue as T?;
         case String:

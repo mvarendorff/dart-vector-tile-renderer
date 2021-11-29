@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:vector_tile_renderer/vector_tile_renderer.dart';
+
 extension IterableExtension<T> on Iterable<T> {
   T? firstOrNull() => isEmpty ? null : first;
 
@@ -16,6 +18,21 @@ extension IterableExtension<T> on Iterable<T> {
     }
 
     return chunks;
+  }
+}
+
+extension GeometryTypeToStringExtension on VectorTileGeomType {
+  String toArgsString() {
+    switch (this) {
+      case VectorTileGeomType.LINESTRING:
+        return 'LineString';
+      case VectorTileGeomType.POINT:
+        return 'Point';
+      case VectorTileGeomType.POLYGON:
+        return 'Polygon';
+      case VectorTileGeomType.UNKNOWN:
+        return 'Unknown';
+    }
   }
 }
 

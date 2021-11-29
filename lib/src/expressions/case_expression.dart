@@ -14,7 +14,7 @@ class CaseExpression<T> extends Expression<T> {
   CaseExpression(this._cases, this._fallback);
 
   @override
-  T? evaluate(Map<String, dynamic> args) {
+  T? evaluateWithArgs(Map<String, dynamic> args) {
     for (final $case in _cases) {
       final boolExpression = $case.condition.evaluate(args) ?? false;
       if (boolExpression) {

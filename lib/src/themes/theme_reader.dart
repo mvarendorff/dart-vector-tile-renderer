@@ -73,6 +73,8 @@ class ThemeReader {
       return DefaultLayer(
           jsonLayer['id'] ?? _unknownId, _toLayerType(jsonLayer),
           selector: selector,
+          source: jsonLayer['source'],
+          sourceLayer: jsonLayer['source-layer'],
           style: Style(fillPaint: paint, outlinePaint: outlinePaint),
           minzoom: _minZoom(jsonLayer),
           maxzoom: _maxZoom(jsonLayer));
@@ -87,6 +89,8 @@ class ThemeReader {
     if (lineStyle != null) {
       return DefaultLayer(
           jsonLayer['id'] ?? _unknownId, _toLayerType(jsonLayer),
+          source: jsonLayer['source'],
+          sourceLayer: jsonLayer['source-layer'],
           selector: selector,
           style: Style(linePaint: lineStyle),
           minzoom: _minZoom(jsonLayer),
@@ -107,6 +111,8 @@ class ThemeReader {
 
       return DefaultLayer(
           jsonLayer['id'] ?? _unknownId, _toLayerType(jsonLayer),
+          source: jsonLayer['source'],
+          sourceLayer: jsonLayer['source-layer'],
           selector: selector,
           style:
               Style(textPaint: paint, textLayout: layout, textHalo: textHalo),
@@ -122,8 +128,7 @@ class ThemeReader {
     final layout = jsonLayer['layout'];
     final textSize = _toTextSize(layout);
     final textLetterSpacing = parse<double>(layout?['text-letter-spacing']);
-    final placement =
-        LayoutPlacement.fromName(layout?['symbol-placement'] as String?);
+    final placement = parse<String>(layout?['symbol-placement']);
     final anchor = parse<String>(layout?['text-anchor']);
     final textFunction = parse<String>(layout?['text-field'])!;
 
