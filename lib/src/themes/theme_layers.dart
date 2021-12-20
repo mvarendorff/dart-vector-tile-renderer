@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:vector_tile/vector_tile_feature.dart';
 import 'package:vector_tile_renderer/src/expressions/expression.dart';
 
-import '../constants.dart';
 import '../context.dart';
 import 'selector.dart';
 import 'style.dart';
@@ -59,7 +58,6 @@ class BackgroundLayer extends ThemeLayer {
     final paint = Paint()
       ..style = PaintingStyle.fill
       ..color = effectiveColor;
-    context.canvas.drawRect(
-        Rect.fromLTRB(0, 0, tileSize.toDouble(), tileSize.toDouble()), paint);
+    context.canvas.drawRect(context.tileClip, paint);
   }
 }
