@@ -55,17 +55,13 @@ class PolygonRenderer extends FeatureRenderer {
       return;
     }
     final args = toArgsMap(context, feature);
-    final clipPath = Path()..addRect(context.tileClip.inflate(20));
-    final clippedPath = Path.combine(PathOperation.intersect, path, clipPath);
-    final fillPaint =
-        style.fillPaint == null ? null : style.fillPaint!.paint(args);
+    final fillPaint = style.fillPaint?.paint(args);
     if (fillPaint != null) {
-      context.canvas.drawPath(clippedPath, fillPaint);
+      context.canvas.drawPath(path, fillPaint);
     }
-    final outlinePaint =
-        style.outlinePaint == null ? null : style.outlinePaint!.paint(args);
+    final outlinePaint = style.outlinePaint?.paint(args);
     if (outlinePaint != null) {
-      context.canvas.drawPath(clippedPath, outlinePaint);
+      context.canvas.drawPath(path, outlinePaint);
     }
   }
 
