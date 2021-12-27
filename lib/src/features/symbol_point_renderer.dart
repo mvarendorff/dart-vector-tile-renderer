@@ -37,7 +37,7 @@ class SymbolPointRenderer extends FeatureRenderer {
       if (text != null &&
           context.labelSpace.canAccept(abbreviated) &&
           abbreviated != null) {
-        final textRenderer = TextRenderer(context, style, abbreviated, feature);
+        final text = TextApproximation(context, style, abbreviated, feature);
         points.forEach((point) {
           points.forEach((point) {
             if (point.length < 2) {
@@ -45,11 +45,14 @@ class SymbolPointRenderer extends FeatureRenderer {
             }
             final x = (point[0] / layer.extent) * tileSize;
             final y = (point[1] / layer.extent) * tileSize;
-            final box = textRenderer.labelBox(Offset(x, y), translated: true);
-            if (box != null &&
-                context.labelSpace.canOccupy(textRenderer.text, box)) {
-              context.labelSpace.occupy(textRenderer.text, box);
-              textRenderer.render(Offset(x, y));
+            final offset = Offset(x, y);
+            var box = text.labelBox(offset, translated: true);
+            if (box != null && context.labelSpace.canOccupy(text.text, box)) {
+              box = text.renderer.labelBox(offset, translated: true);
+              if (box != null && context.labelSpace.canOccupy(text.text, box)) {
+                context.labelSpace.occupy(text.text, box);
+                text.renderer.render(Offset(x, y));
+              }
             }
           });
         });
