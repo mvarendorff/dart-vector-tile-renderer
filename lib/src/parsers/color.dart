@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/widgets.dart';
 import 'package:vector_tile_renderer/src/expressions/expression.dart';
 import 'package:vector_tile_renderer/src/expressions/function_expression.dart';

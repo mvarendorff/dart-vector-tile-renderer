@@ -8,7 +8,6 @@ import 'package:vector_tile_renderer/src/features/to_args_map.dart';
 import '../../vector_tile_renderer.dart';
 import '../constants.dart';
 import '../context.dart';
-import '../logger.dart';
 import '../themes/style.dart';
 import 'feature_geometry.dart';
 import 'feature_renderer.dart';

@@ -32,7 +32,9 @@ class DefaultLayer extends ThemeLayer {
         .forEach((layer) {
       selector.features(layer.features, context).forEach((feature) {
         context.featureRenderer.render(context, type, style, layer, feature);
-        _releaseMemory(feature);
+        if (!context.tileset.preprocessed) {
+          _releaseMemory(feature);
+        }
       });
     });
   }
