@@ -7,6 +7,9 @@ import 'package:vector_tile_renderer/src/parsers/parsers.dart';
 
 import '../expressions/text_halo_expression.dart';
 import '../logger.dart';
+import 'color_parser.dart';
+import 'expression/expression.dart';
+import 'expression/literal_expression.dart';
 import 'paint_factory.dart';
 import 'selector_factory.dart';
 import 'style.dart';
