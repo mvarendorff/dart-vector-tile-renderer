@@ -14,14 +14,16 @@ class DefaultLayer extends ThemeLayer {
   final String source;
   final String sourceLayer;
 
-  DefaultLayer(String id, ThemeLayerType type,
-      {required this.selector,
-      required this.style,
-      required this.source,
-      required this.sourceLayer,
-      required double? minzoom,
-      required double? maxzoom})
-      : super(id, type, minzoom: minzoom, maxzoom: maxzoom);
+  DefaultLayer(
+    String id,
+    ThemeLayerType type, {
+    required this.selector,
+    required this.style,
+    required this.source,
+    required this.sourceLayer,
+    required double? minzoom,
+    required double? maxzoom,
+  }) : super(id, type, minzoom: minzoom, maxzoom: maxzoom);
 
   @override
   void render(Context context) {
