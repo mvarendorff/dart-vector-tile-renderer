@@ -3,6 +3,7 @@ import 'package:vector_tile/vector_tile_feature.dart';
 import 'package:vector_tile_renderer/src/expressions/expression.dart';
 
 import '../context.dart';
+import '../themes/expression/expression.dart';
 import '../themes/style.dart';
 import 'to_args_map.dart';
 
@@ -123,7 +124,6 @@ class TextRenderer {
           textTransform == null ? text : textTransform(text);
       return TextPainter(
           text: TextSpan(style: textStyle, text: transformedText),
-          textAlign: TextAlign.center,
           textDirection: TextDirection.ltr)
         ..layout();
     }
