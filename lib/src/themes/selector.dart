@@ -1,9 +1,8 @@
-import 'package:vector_tile/vector_tile.dart';
-import 'package:vector_tile_renderer/src/expressions/value_expression.dart';
-
+import '../../vector_tile_renderer.dart';
 import '../context.dart';
 import '../expressions/expression.dart';
 import '../features/to_args_map.dart';
+import 'expression/expressionle_renderer/src/expressions/value_expression.dart';
 
 class FeatureSelector {
   final Expression<bool> expression;
