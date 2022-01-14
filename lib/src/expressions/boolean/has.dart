@@ -6,6 +6,8 @@ class HasExpression extends Expression<bool> {
 
   HasExpression(this.key, {this.negated = false});
 
+  String get cacheKey => 'has_${key}_$negated}';
+
   @override
   bool? evaluateWithArgs(Map<String, dynamic> args) {
     final result = args.containsKey(key);

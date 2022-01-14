@@ -5,6 +5,8 @@ class NumericTermExpression extends Expression<double> {
   final Expression<double> a;
   final Expression<double> b;
 
+  String get cacheKey => '${op}_${a.cacheKey}_${b.cacheKey}';
+
   NumericTermExpression(this.op, this.a, this.b);
 
   @override

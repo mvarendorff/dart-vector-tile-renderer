@@ -4,6 +4,9 @@ import 'expression.dart';
 
 class ArgumentExpression<T> extends Expression<T> {
   final String key;
+
+  String get cacheKey => 'arg_$key';
+
   ArgumentExpression(this.key);
 
   @override

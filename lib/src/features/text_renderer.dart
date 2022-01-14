@@ -3,7 +3,6 @@ import 'package:vector_tile/vector_tile_feature.dart';
 import 'package:vector_tile_renderer/src/expressions/expression.dart';
 
 import '../context.dart';
-import '../themes/expression/expression.dart';
 import '../themes/style.dart';
 import 'to_args_map.dart';
 
@@ -11,12 +10,14 @@ class TextApproximation {
   final Context context;
   final Style style;
   final String text;
+  final VectorTileFeature feature;
   Offset? _translation;
   Size? _size;
   TextRenderer? _renderer;
 
-  TextApproximation(this.context, this.style, this.text) {
-    double? textSize = style.textLayout!.textSize(context.zoom);
+  TextApproximation(this.context, this.style, this.text, this.feature) {
+    final args = toArgsMap(context, feature);
+    double? textSize = style.textLayout!.textSize.evaluate(args);
     if (textSize != null) {
       if (context.zoomScaleFactor > 1.0) {
         textSize = textSize / context.zoomScaleFactor;
@@ -26,7 +27,7 @@ class TextApproximation {
       final approximateHeight = (textSize * 1.28).ceilToDouble();
       final size = Size(approximateWidth, approximateHeight);
       _size = size;
-      _translation = _offset(size, style.textLayout!.anchor);
+      _translation = _offset(size, style.textLayout!.anchor?.evaluate(args));
     }
   }
 
@@ -38,7 +39,7 @@ class TextApproximation {
   TextRenderer get renderer {
     var result = _renderer;
     if (result == null) {
-      result = TextRenderer(context, style, text);
+      result = TextRenderer(context, style, text, feature);
       _renderer = result;
     }
     return result;
@@ -138,7 +139,9 @@ class TextRenderer {
   }
 }
 
-Offset? _offset(Size size, LayoutAnchor anchor) {
+Offset? _offset(Size size, String? name) {
+  final anchor = LayoutAnchor.fromName(name);
+
   switch (anchor) {
     case LayoutAnchor.center:
       return Offset(-size.width / 2, -size.height / 2);

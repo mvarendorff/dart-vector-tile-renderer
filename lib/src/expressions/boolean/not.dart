@@ -5,6 +5,8 @@ class NotExpression extends Expression<bool> {
 
   NotExpression(this.delegate);
 
+  String get cacheKey => 'not_${delegate.cacheKey}';
+
   @override
   bool? evaluateWithArgs(Map<String, dynamic> args) {
     final result = delegate.evaluate(args) ?? false;

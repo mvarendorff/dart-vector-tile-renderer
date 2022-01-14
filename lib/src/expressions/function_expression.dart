@@ -5,6 +5,8 @@ import 'expression.dart';
 class FunctionExpression<T> extends Expression<T> {
   final T? Function(Map<String, dynamic> args) _evaluate;
 
+  String get cacheKey => _evaluate.hashCode.toString();
+
   FunctionExpression(this._evaluate);
 
   @override

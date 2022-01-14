@@ -5,6 +5,8 @@ class AllExpression extends Expression<bool> {
 
   AllExpression(this.delegates);
 
+  String get cacheKey => 'all_${delegates.map((e) => e?.cacheKey).join(',')}';
+
   @override
   bool? evaluateWithArgs(Map<String, dynamic> args) {
     return delegates

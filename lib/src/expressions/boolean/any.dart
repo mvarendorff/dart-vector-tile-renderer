@@ -5,6 +5,8 @@ class AnyExpression extends Expression<bool> {
 
   AnyExpression(this.delegates);
 
+  String get cacheKey => 'any_${delegates.map((e) => e?.cacheKey).join(',')}';
+
   bool? evaluateWithArgs(Map<String, dynamic> args) {
     return delegates
         .whereType<Expression<bool>>()

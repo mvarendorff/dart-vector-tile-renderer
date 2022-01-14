@@ -7,6 +7,8 @@ class NumericComparisonExpression extends Expression<bool> {
 
   NumericComparisonExpression(this.op, this.a, this.b);
 
+  String get cacheKey => '${op}_${a.cacheKey}_${b.cacheKey}';
+
   @override
   bool? evaluateWithArgs(Map<String, dynamic> args) {
     final aValue = a.evaluate(args)!;

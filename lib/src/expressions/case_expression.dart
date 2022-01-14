@@ -5,11 +5,16 @@ class Case<T> {
   final Expression<T>? value;
 
   Case(this.condition, this.value);
+
+  String get cacheKey => 'caseData_${condition.cacheKey}_${value?.cacheKey}';
 }
 
 class CaseExpression<T> extends Expression<T> {
   final Iterable<Case<T>> _cases;
   final Expression<T>? _fallback;
+
+  String get cacheKey =>
+      'case_${_cases.map((c) => c.cacheKey).join(',')}_${_fallback?.cacheKey}';
 
   CaseExpression(this._cases, this._fallback);
 

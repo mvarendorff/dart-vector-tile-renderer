@@ -5,6 +5,10 @@ import 'interpolation_expression.dart';
 
 class ExponentialInterpolationExpression<T> extends InterpolationExpression<T> {
   final double _base;
+
+  String get cacheKey =>
+      'inter_expo_${_base}_${input.cacheKey}_${stops.map((s) => s.cacheKey).join(',')}';
+
   ExponentialInterpolationExpression(
       this._base, Expression<double> input, List<FunctionStop<T>> stops)
       : super(input, stops);

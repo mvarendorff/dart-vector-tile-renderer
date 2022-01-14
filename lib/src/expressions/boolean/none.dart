@@ -7,6 +7,8 @@ class NoneExpression extends Expression<bool> {
 
   NoneExpression(this.delegates);
 
+  String get cacheKey => 'none_${delegates.map((e) => e?.cacheKey).join(',')}';
+
   @override
   bool? evaluateWithArgs(Map<String, dynamic> args) {
     return delegates

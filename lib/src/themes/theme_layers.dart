@@ -4,12 +4,13 @@ import 'package:vector_tile/vector_tile_feature.dart';
 import 'package:vector_tile_renderer/src/expressions/expression.dart';
 
 import '../context.dart';
+import '../tileset.dart';
 import 'selector.dart';
 import 'style.dart';
 import 'theme.dart';
 
 class DefaultLayer extends ThemeLayer {
-  final FeatureSelector selector;
+  final TileLayerSelector selector;
   final Style style;
   final String source;
   final String sourceLayer;
@@ -27,18 +28,12 @@ class DefaultLayer extends ThemeLayer {
 
   @override
   void render(Context context) {
-    context
-        .tile(source)
-        ?.layers
-        .where((l) => l.name == sourceLayer)
-        .forEach((layer) {
-      selector.features(layer.features, context).forEach((feature) {
-        context.featureRenderer.render(context, type, style, layer, feature);
-        if (!context.tileset.preprocessed) {
-          _releaseMemory(feature);
-        }
-      });
-    });
+    final features = context.tileset.resolver.resolveFeatures(this.selector);
+    for (final feature in features) {
+      context.featureRenderer
+          .render(context, type, style, feature.layer, feature.feature);
+      if (!context.tileset.preprocessed) _releaseMemory(feature.feature);
+    }
   }
 
   void _releaseMemory(VectorTileFeature feature) {

@@ -6,6 +6,8 @@ class TextHaloExpression extends Expression<List<Shadow>> {
   final Expression<Color> _color;
   final double _haloWidth;
 
+  String get cacheKey => '${_color.cacheKey}_$_haloWidth';
+
   TextHaloExpression(this._color, this._haloWidth);
 
   List<Shadow>? evaluateWithArgs(Map<String, dynamic> args) {

@@ -9,6 +9,9 @@ class CubicBezierInterpolationExpression<T> extends InterpolationExpression<T> {
   final Vector2 _c1;
   final Vector2 _c2;
 
+  String get cacheKey =>
+      'inter_cubic_${_c1}_${_c2}_${input.cacheKey}_${stops.map((s) => s.cacheKey).join(',')}';
+
   CubicBezierInterpolationExpression(
     this._c1,
     this._c2,

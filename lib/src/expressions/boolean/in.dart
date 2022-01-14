@@ -7,6 +7,9 @@ class InExpression<T> extends Expression<bool> {
 
   InExpression(this.input, this.items, {this.negated = false});
 
+  String get cacheKey =>
+      'in_${input?.cacheKey}_${items.map((e) => e?.cacheKey).join(',')}';
+
   @override
   bool? evaluateWithArgs(Map<String, dynamic> args) {
     final value = input?.evaluate(args);

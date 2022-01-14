@@ -15,6 +15,8 @@ class FunctionStop<T> {
   final Expression<T> value;
 
   FunctionStop(this.zoom, this.value);
+
+  String get cacheKey => '${zoom.cacheKey}_${value.cacheKey}';
 }
 
 class DoubleFunctionModelFactory {

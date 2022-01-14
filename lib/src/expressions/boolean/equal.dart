@@ -7,6 +7,8 @@ class EqualExpression<T> extends Expression<bool> {
 
   EqualExpression(this.a, this.b, {this.negated = false});
 
+  String get cacheKey => 'equal_${a?.cacheKey}_${b?.cacheKey}_$negated';
+
   @override
   bool? evaluateWithArgs(Map<String, dynamic> args) {
     final aValue = a?.evaluate(args);

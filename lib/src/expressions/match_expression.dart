@@ -6,12 +6,17 @@ class Match<Input, Output> {
 
   Match(this.input, this.output)
       : assert(input is List<Input> || input is Input);
+
+  String get cacheKey => 'matchData_${input}_${output?.cacheKey}';
 }
 
 class MatchExpression<Output, Input> extends Expression<Output> {
   final Expression<Input>? _compare;
   final List<Match<Input, Output>> _matches;
   final Expression<Output>? _fallback;
+
+  String get cacheKey =>
+      'match_${_compare?.cacheKey}_${_matches.map((m) => m.cacheKey).join(',')}_${_fallback?.cacheKey}';
 
   MatchExpression(this._compare, this._matches, this._fallback);
 
