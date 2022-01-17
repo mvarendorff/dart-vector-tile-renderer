@@ -91,7 +91,8 @@ class _ExpressionLayerSelector extends LayerSelector {
   @override
   Iterable<VectorTileFeature> features(Iterable<VectorTileFeature> features) {
     return features.where((feature) {
-      final args = {...featureToArgsMap(feature), 'zoom': 1.0};
+      // Hardcoded zoom value of 15 which is far from ideal but suffices for our usecase
+      final args = {...featureToArgsMap(feature), 'zoom': 15.0};
       final result = _expression.evaluate(args);
       return result is bool && result;
     });
