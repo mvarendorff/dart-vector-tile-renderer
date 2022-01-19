@@ -11,4 +11,9 @@ class FunctionExpression<T> extends Expression<T> {
 
   @override
   T? evaluateWithArgs(Map<String, dynamic> args) => _evaluate(args);
+
+  // FunctionExpressions were made as a replacement for zoom functions in map
+  //  format. Let's just assume 'zoom' is the only thing concerning them.
+  @override
+  Set<String> properties() => {'zoom'};
 }

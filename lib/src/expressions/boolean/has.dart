@@ -14,4 +14,7 @@ class HasExpression extends Expression<bool> {
 
     return negated ? !result : result;
   }
+
+  @override
+  Set<String> properties() => {key};
 }

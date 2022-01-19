@@ -18,4 +18,14 @@ class EqualExpression<T> extends Expression<bool> {
 
     return negated ? !equal : equal;
   }
+
+  @override
+  Set<String> properties() {
+    final Set<String> result = {};
+
+    if (a != null) result.addAll(a!.properties());
+    if (b != null) result.addAll(b!.properties());
+
+    return result;
+  }
 }

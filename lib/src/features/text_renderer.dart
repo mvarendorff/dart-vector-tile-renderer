@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:vector_tile/vector_tile_feature.dart';
 import 'package:vector_tile_renderer/src/expressions/expression.dart';
 
+import '../../vector_tile_renderer.dart';
 import '../context.dart';
 import '../themes/style.dart';
 import 'to_args_map.dart';
@@ -10,7 +10,7 @@ class TextApproximation {
   final Context context;
   final Style style;
   final String text;
-  final VectorTileFeature feature;
+  final TileFeature feature;
   Offset? _translation;
   Size? _size;
   TextRenderer? _renderer;
@@ -58,7 +58,7 @@ class TextRenderer {
   final Context context;
   final Style style;
   final String text;
-  final VectorTileFeature feature;
+  final TileFeature feature;
 
   late final TextPainter? _painter;
   late final Offset? _translation;

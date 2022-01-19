@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:vector_tile/vector_tile_feature.dart';
 import 'package:vector_tile_renderer/src/expressions/expression.dart';
 
 import '../context.dart';
@@ -32,13 +31,7 @@ class DefaultLayer extends ThemeLayer {
     for (final feature in features) {
       context.featureRenderer
           .render(context, type, style, feature.layer, feature.feature);
-      if (!context.tileset.preprocessed) _releaseMemory(feature.feature);
     }
-  }
-
-  void _releaseMemory(VectorTileFeature feature) {
-    feature.properties = null;
-    feature.geometry = null;
   }
 }
 

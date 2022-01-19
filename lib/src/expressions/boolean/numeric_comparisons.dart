@@ -25,4 +25,7 @@ class NumericComparisonExpression extends Expression<bool> {
         return aValue > bValue;
     }
   }
+
+  @override
+  Set<String> properties() => {...a.properties(), ...b.properties()};
 }

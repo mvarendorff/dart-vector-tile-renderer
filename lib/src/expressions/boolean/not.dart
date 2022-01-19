@@ -12,4 +12,7 @@ class NotExpression extends Expression<bool> {
     final result = delegate.evaluate(args) ?? false;
     return !result;
   }
+
+  @override
+  Set<String> properties() => delegate.properties();
 }

@@ -12,4 +12,10 @@ class AnyExpression extends Expression<bool> {
         .whereType<Expression<bool>>()
         .any((element) => element.evaluate(args) ?? false);
   }
+
+  @override
+  Set<String> properties() => delegates
+      .whereType<Expression<bool>>()
+      .expand((e) => e.properties())
+      .toSet();
 }

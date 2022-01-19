@@ -17,4 +17,7 @@ class CoalesceExpression<T> extends Expression<T> {
 
     return null;
   }
+
+  @override
+  Set<String> properties() => _delegates.expand((e) => e.properties()).toSet();
 }

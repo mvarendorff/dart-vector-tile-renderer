@@ -25,4 +25,7 @@ class NumericTermExpression extends Expression<double> {
         return aValue / bValue;
     }
   }
+
+  @override
+  Set<String> properties() => {...a.properties(), ...b.properties()};
 }

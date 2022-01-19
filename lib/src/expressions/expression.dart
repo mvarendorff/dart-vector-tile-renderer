@@ -11,4 +11,6 @@ abstract class Expression<T> {
 
   @protected
   T? evaluateWithArgs(Map<String, dynamic> args);
+
+  Set<String> properties();
 }

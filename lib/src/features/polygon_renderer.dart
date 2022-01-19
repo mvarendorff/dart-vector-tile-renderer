@@ -1,63 +1,52 @@
 import 'dart:ui';
 
-import 'package:vector_tile/vector_tile.dart';
-import 'package:vector_tile/vector_tile_feature.dart';
 import 'package:vector_tile_renderer/src/features/to_args_map.dart';
 
 import '../../vector_tile_renderer.dart';
 import '../constants.dart';
 import '../context.dart';
 import '../themes/style.dart';
-import 'feature_geometry.dart';
 import 'feature_renderer.dart';
 import 'points_extension.dart';
 
 class PolygonRenderer extends FeatureRenderer {
   final Logger logger;
-  final FeatureGeometry geometry;
-
-  PolygonRenderer(this.logger) : geometry = FeatureGeometry(logger);
+  PolygonRenderer(this.logger);
 
   @override
   void render(Context context, ThemeLayerType layerType, Style style,
-      VectorTileLayer layer, VectorTileFeature feature) {
+      TileLayer layer, TileFeature feature) {
     if (style.fillPaint == null && style.outlinePaint == null) {
       logger
           .warn(() => 'polygon does not have a fill paint or an outline paint');
       return;
     }
 
-    final polygons = geometry.decodePolygons(feature);
-    if (polygons != null) {
-      if (polygons.length == 1) {
-        logger.log(() => 'rendering polygon');
-      } else if (polygons.length > 1) {
-        logger.log(() => 'rendering multi-polygon');
-      }
-
-      for (final coordinates in polygons) {
-        _renderPolygon(context, style, layer, feature, coordinates);
-      }
-    }
-  }
-
-  void _renderPolygon(Context context, Style style, VectorTileLayer layer,
-      VectorTileFeature feature, List<List<List<double>>> coordinates) {
-    final path = Path();
-    coordinates.forEach((ring) {
-      path.addPolygon(ring.toPoints(layer.extent, tileSize), true);
-    });
-    if (!_isWithinClip(context, path)) {
-      return;
-    }
+    final polygons = feature.polygons;
     final args = toArgsMap(context, feature);
-    final fillPaint = style.fillPaint?.paint(args);
-    if (fillPaint != null) {
-      context.canvas.drawPath(path, fillPaint);
+
+    if (polygons.length == 1) {
+      logger.log(() => 'rendering polygon');
+    } else if (polygons.length > 1) {
+      logger.log(() => 'rendering multi-polygon');
     }
-    final outlinePaint = style.outlinePaint?.paint(args);
-    if (outlinePaint != null) {
-      context.canvas.drawPath(path, outlinePaint);
+
+    for (final polygon in feature.polygons) {
+      final path = Path();
+      for (final ring in polygon) {
+        path.addPolygon(ring.toPoints(layer.extent, tileSize), true);
+      }
+      if (!_isWithinClip(context, path)) {
+        continue;
+      }
+      final fillPaint = style.fillPaint?.paint(args);
+      if (fillPaint != null) {
+        context.canvas.drawPath(path, fillPaint);
+      }
+      final outlinePaint = style.outlinePaint?.paint(args);
+      if (outlinePaint != null) {
+        context.canvas.drawPath(path, outlinePaint);
+      }
     }
   }
 

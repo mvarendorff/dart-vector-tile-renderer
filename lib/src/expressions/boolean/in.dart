@@ -18,4 +18,16 @@ class InExpression<T> extends Expression<bool> {
 
     return negated ? !result : result;
   }
+
+  @override
+  Set<String> properties() {
+    final Set<String> result = {};
+
+    if (input != null) result.addAll(input!.properties());
+    for (final item in items) {
+      if (item != null) result.addAll(item.properties());
+    }
+
+    return result;
+  }
 }

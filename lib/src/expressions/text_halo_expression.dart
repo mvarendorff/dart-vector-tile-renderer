@@ -44,4 +44,7 @@ class TextHaloExpression extends Expression<List<Shadow>> {
       ),
     ];
   }
+
+  @override
+  Set<String> properties() => {..._color.properties(), 'zoom'};
 }

@@ -29,4 +29,17 @@ class CaseExpression<T> extends Expression<T> {
 
     return _fallback?.evaluate(args);
   }
+
+  @override
+  Set<String> properties() {
+    final Set<String> result = {};
+
+    if (_fallback != null) result.addAll(_fallback!.properties());
+    for (final $case in _cases) {
+      result.addAll($case.condition.properties());
+      if ($case.value != null) result.addAll($case.value!.properties());
+    }
+
+    return result;
+  }
 }

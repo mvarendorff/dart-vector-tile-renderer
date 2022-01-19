@@ -84,4 +84,16 @@ abstract class InterpolationExpression<T> extends Expression<T> {
       ) as T?;
     }
   }
+
+  @override
+  Set<String> properties() {
+    final Set<String> result = {...input.properties()};
+
+    for (final stop in stops) {
+      result.addAll(stop.value.properties());
+      result.addAll(stop.zoom.properties());
+    }
+
+    return result;
+  }
 }

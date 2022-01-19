@@ -31,7 +31,7 @@ class ThemeReader {
       final themeLayers = layers
           .map((layer) => _toThemeLayer(layer))
           .whereType<ThemeLayer>()
-          .toList();
+          .toList(growable: false);
       return Theme(id: id, version: version, layers: themeLayers);
     });
   }

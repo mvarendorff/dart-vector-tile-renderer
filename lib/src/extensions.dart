@@ -21,16 +21,16 @@ extension IterableExtension<T> on Iterable<T> {
   }
 }
 
-extension GeometryTypeToStringExtension on VectorTileGeomType {
+extension GeometryTypeToStringExtension on TileFeatureType {
   String toArgsString() {
     switch (this) {
-      case VectorTileGeomType.LINESTRING:
+      case TileFeatureType.linestring:
         return 'LineString';
-      case VectorTileGeomType.POINT:
+      case TileFeatureType.point:
         return 'Point';
-      case VectorTileGeomType.POLYGON:
+      case TileFeatureType.polygon:
         return 'Polygon';
-      case VectorTileGeomType.UNKNOWN:
+      default:
         return 'Unknown';
     }
   }
@@ -52,4 +52,14 @@ extension PaintExtension on Paint {
     ..strokeMiterLimit = this.strokeMiterLimit
     ..strokeWidth = this.strokeWidth
     ..style = this.style;
+}
+
+extension StringSetsExtension on Iterable<Set<String>> {
+  Set<String> flatSet() {
+    final values = <String>{};
+    for (final set in this) {
+      values.addAll(set);
+    }
+    return values;
+  }
 }

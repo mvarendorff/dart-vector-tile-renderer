@@ -13,4 +13,10 @@ class AllExpression extends Expression<bool> {
         .whereType<Expression<bool>>()
         .every((d) => d.evaluate(args) ?? false);
   }
+
+  @override
+  Set<String> properties() => delegates
+      .whereType<Expression<bool>>()
+      .expand((e) => e.properties())
+      .toSet();
 }

@@ -15,4 +15,10 @@ class NoneExpression extends Expression<bool> {
         .whereType<Expression<bool>>()
         .none((e) => e.evaluate(args) ?? false);
   }
+
+  @override
+  Set<String> properties() => delegates
+      .whereType<Expression<bool>>()
+      .expand((e) => e.properties())
+      .toSet();
 }

@@ -37,4 +37,17 @@ class MatchExpression<Output, Input> extends Expression<Output> {
 
     return _fallback?.evaluate(args);
   }
+
+  @override
+  Set<String> properties() {
+    final Set<String> result = {};
+
+    if (_compare != null) result.addAll(_compare!.properties());
+    if (_fallback != null) result.addAll(_fallback!.properties());
+    for (final match in _matches) {
+      if (match.output != null) result.addAll(match.output!.properties());
+    }
+
+    return result;
+  }
 }

@@ -1,15 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:vector_tile/vector_tile.dart';
-import 'package:vector_tile/vector_tile_feature.dart';
 import 'package:vector_tile_renderer/src/features/to_args_map.dart';
 
 import '../../vector_tile_renderer.dart';
 import '../constants.dart';
 import '../context.dart';
 import '../themes/style.dart';
-import 'feature_geometry.dart';
 import 'feature_renderer.dart';
 import 'points_extension.dart';
 import 'text_abbreviator.dart';
@@ -17,13 +14,12 @@ import 'text_renderer.dart';
 
 class SymbolLineRenderer extends FeatureRenderer {
   final Logger logger;
-  final FeatureGeometry geometry;
 
-  SymbolLineRenderer(this.logger) : geometry = FeatureGeometry(logger);
+  SymbolLineRenderer(this.logger);
 
   @override
   void render(Context context, ThemeLayerType layerType, Style style,
-      VectorTileLayer layer, VectorTileFeature feature) {
+      TileLayer layer, TileFeature feature) {
     final textPaint = style.textPaint;
     final textLayout = style.textLayout;
     if (textPaint == null || textLayout == null) {
@@ -31,35 +27,36 @@ class SymbolLineRenderer extends FeatureRenderer {
       return;
     }
 
-    final lines = geometry.decodeLines(feature);
-    if (lines != null) {
-      logger.log(() => 'rendering linestring symbol');
-      final text = textLayout.text.evaluate(toArgsMap(context, feature));
-      if (text != null) {
-        final path = Path();
-        lines.forEach((line) {
-          path.addPolygon(line.toPoints(layer.extent, tileSize), false);
-        });
-        final metrics = path.computeMetrics().toList();
-        final abbreviated = TextAbbreviator().abbreviate(text);
-        if (metrics.length > 0 && context.labelSpace.canAccept(abbreviated)) {
-          final text = TextApproximation(context, style, abbreviated, feature);
-          final renderBox = _findMiddleMetric(context, metrics, text);
-          if (renderBox != null) {
-            final tangent = renderBox.tangent;
-            final rotate = (tangent.angle >= 0.01 || tangent.angle <= -0.01);
-            if (rotate) {
-              context.canvas.save();
-              context.canvas
-                  .translate(tangent.position.dx, tangent.position.dy);
-              context.canvas.rotate(-_rightSideUpAngle(tangent.angle));
-              context.canvas
-                  .translate(-tangent.position.dx, -tangent.position.dy);
-            }
-            text.renderer.render(tangent.position);
-            if (rotate) {
-              context.canvas.restore();
-            }
+    final lines = feature.lines;
+    logger.log(() => 'rendering linestring symbol');
+    final args = toArgsMap(context, feature);
+    final text = textLayout.text.evaluate(args);
+    if (text != null) {
+      final path = Path();
+      for (final line in lines) {
+        path.addPolygon(line.toPoints(layer.extent, tileSize), false);
+      }
+      if (!_isWithinClip(context, path)) {
+        return;
+      }
+      final metrics = path.computeMetrics().toList();
+      final abbreviated = TextAbbreviator().abbreviate(text);
+      if (metrics.length > 0 && context.labelSpace.canAccept(abbreviated)) {
+        final text = TextApproximation(context, style, abbreviated, feature);
+        final renderBox = _findMiddleMetric(context, metrics, text);
+        if (renderBox != null) {
+          final tangent = renderBox.tangent;
+          final rotate = (tangent.angle >= 0.01 || tangent.angle <= -0.01);
+          if (rotate) {
+            context.canvas.save();
+            context.canvas.translate(tangent.position.dx, tangent.position.dy);
+            context.canvas.rotate(-_rightSideUpAngle(tangent.angle));
+            context.canvas
+                .translate(-tangent.position.dx, -tangent.position.dy);
+          }
+          text.renderer.render(tangent.position);
+          if (rotate) {
+            context.canvas.restore();
           }
         }
       }
@@ -160,6 +157,9 @@ class SymbolLineRenderer extends FeatureRenderer {
     }
     return Rect.fromLTWH(box.left + xOffset, box.top + yOffset, width, height);
   }
+
+  bool _isWithinClip(Context context, Path path) =>
+      context.tileClip.overlaps(path.getBounds());
 }
 
 class _RenderBox {

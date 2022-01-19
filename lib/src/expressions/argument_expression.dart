@@ -33,4 +33,7 @@ class ArgumentExpression<T> extends Expression<T> {
 
     return null;
   }
+
+  @override
+  Set<String> properties() => {key};
 }
