@@ -27,7 +27,8 @@ class DefaultLayer extends ThemeLayer {
 
   @override
   void render(Context context) {
-    final features = context.tileset.resolver.resolveFeatures(this.selector);
+    final features = context.tileset.resolver.resolveFeatures(this.selector, debugId: id);
+
     for (final feature in features) {
       context.featureRenderer
           .render(context, type, style, feature.layer, feature.feature);

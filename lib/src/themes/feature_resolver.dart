@@ -6,7 +6,7 @@ import 'selector.dart';
 /// [TileLayerSelector].
 abstract class LayerFeatureResolver {
   /// Provides the features resolved using the given [selector].
-  Iterable<LayerFeature> resolveFeatures(TileLayerSelector selector);
+  Iterable<LayerFeature> resolveFeatures(TileLayerSelector selector, { String? debugId });
 }
 
 /// Default implementation of [LayerFeatureResolver] that resolves
@@ -17,7 +17,7 @@ class DefaultLayerFeatureResolver implements LayerFeatureResolver {
   final Tileset _tileset;
 
   @override
-  Iterable<LayerFeature> resolveFeatures(TileLayerSelector selector) sync* {
+  Iterable<LayerFeature> resolveFeatures(TileLayerSelector selector, { String? debugId }) sync* {
     for (final layer in selector.select(_tileset)) {
       for (final feature in selector.layerSelector.features(layer.features)) {
         yield LayerFeature(layer, feature);
@@ -35,7 +35,7 @@ class CachingLayerFeatureResolver implements LayerFeatureResolver {
   final _cache = <String, List<LayerFeature>>{};
 
   @override
-  Iterable<LayerFeature> resolveFeatures(TileLayerSelector selector) {
+  Iterable<LayerFeature> resolveFeatures(TileLayerSelector selector, { String? debugId }) {
     return _cache.putIfAbsent(
       selector.cacheKey,
       () => _delegate.resolveFeatures(selector).toList(growable: false),

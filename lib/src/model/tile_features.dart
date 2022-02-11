@@ -10,7 +10,7 @@ class MultiLineTileFeature extends TileFeature {
       : super(type, properties);
 
   @override
-  List<List<Point>> get lines => coordinates;
+  List<List<Point>> get lines => coordinates; // [...coordinates, [coordinates.first.first, coordinates.last.last]];
   @override
   List<List<List<Point>>> get polygons => [coordinates];
 }

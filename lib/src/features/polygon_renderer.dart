@@ -7,6 +7,7 @@ import '../constants.dart';
 import '../context.dart';
 import '../themes/style.dart';
 import 'feature_renderer.dart';
+import 'line_renderer.dart';
 import 'points_extension.dart';
 
 class PolygonRenderer extends FeatureRenderer {
@@ -17,8 +18,16 @@ class PolygonRenderer extends FeatureRenderer {
   void render(Context context, ThemeLayerType layerType, Style style,
       TileLayer layer, TileFeature feature) {
     if (style.fillPaint == null && style.outlinePaint == null) {
-      logger
-          .warn(() => 'polygon does not have a fill paint or an outline paint');
+      if (style.linePaint != null) {
+        logger.log(() =>
+            'polygon has no fill paint, nor an outline paint but a line paint; rendering as multiple lines instead');
+        LineRenderer(logger).render(context, layerType, style, layer, feature);
+        return;
+      }
+
+      logger.warn(
+          () => 'polygon does not have a fill-, outline- or a line paint');
+
       return;
     }
 
@@ -45,6 +54,7 @@ class PolygonRenderer extends FeatureRenderer {
       }
       final outlinePaint = style.outlinePaint?.paint(args);
       if (outlinePaint != null) {
+        outlinePaint.strokeWidth = 3;
         context.canvas.drawPath(path, outlinePaint);
       }
     }
