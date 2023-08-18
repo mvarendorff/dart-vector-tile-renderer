@@ -46,36 +46,15 @@ class InExpressionParser extends ExpressionComponentParser {
 
   @override
   bool matches(List<dynamic> json) {
-    return super.matches(json) && json.length >= 3 && json[1] is String;
+    return super.matches(json) && json.length >= 3;
   }
 
   @override
   Expression? parse(List<dynamic> json) {
-    final getExpression = parser.parseOptional(['get', json[1]]);
-    if (getExpression != null) {
-      final values = json.sublist(2);
-      return InExpression(getExpression, values);
-    }
-    return null;
-  }
-}
+    final needle = parser.parse(json[1]);
+    final haystack = parser.parse(json[2]);
 
-class NotInExpressionParser extends ExpressionComponentParser {
-  NotInExpressionParser(ExpressionParser parser) : super(parser, '!in');
-
-  @override
-  bool matches(List<dynamic> json) {
-    return super.matches(json) && json.length >= 3 && json[1] is String;
-  }
-
-  @override
-  Expression? parse(List<dynamic> json) {
-    final getExpression = parser.parseOptional(['get', json[1]]);
-    if (getExpression != null) {
-      final values = json.sublist(2);
-      return NotExpression(InExpression(getExpression, values));
-    }
-    return null;
+    return InExpression(needle, haystack);
   }
 }
 

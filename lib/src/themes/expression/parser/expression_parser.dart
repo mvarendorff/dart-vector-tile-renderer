@@ -28,7 +28,6 @@ class ExpressionParser {
     _register(HasExpressionParser(this));
     _register(NotHasExpressionParser(this));
     _register(InExpressionParser(this));
-    _register(NotInExpressionParser(this));
     _register(NotExpressionParser(this));
     _register(EqualsExpressionParser(this));
     _register(NotEqualsExpressionParser(this));

@@ -123,20 +123,28 @@ class EqualsExpression extends Expression {
 
 class InExpression extends Expression {
   final Expression _first;
-  final List _values;
+  final Expression _values;
 
   InExpression(this._first, this._values)
-      : super('(${_first.cacheKey} in [${_values.join(',')}])',
-            _first.properties());
+      : super(
+          '(${_first.cacheKey} in ${_values.cacheKey})',
+          _first.properties(),
+        );
 
   @override
   evaluate(EvaluationContext context) {
-    final first = _first.evaluate(context);
-    return _values.any((e) => first == e);
+    final needle = _first.evaluate(context);
+    final haystack = _values.evaluate(context);
+
+    if (needle is String && haystack is String) {
+      return haystack.contains(needle);
+    }
+
+    return haystack.any((e) => needle == e);
   }
 
   @override
-  bool get isConstant => _first.isConstant;
+  bool get isConstant => _first.isConstant && _values.isConstant;
 }
 
 class AnyExpression extends Expression {
